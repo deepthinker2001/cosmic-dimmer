@@ -154,4 +154,4 @@ model and connector and never include EDID serial numbers.
 ```
 
 [docs/workspace.md](docs/workspace.md) covers the layout, the pinned COSMIC
-baseline, the build requirements and what has been verified.
+baseline, the build requirements and what has been verified. [RELEASE.md](RELEASE.md) describes how to publish a new version.
