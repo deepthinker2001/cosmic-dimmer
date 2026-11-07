@@ -1,0 +1,67 @@
+[package]
+name = "cosmic-dimmer"
+description = "Standalone COSMIC panel applet for per-output hardware and alpha dimming"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+license.workspace = true
+
+# `cargo deb -p cosmic-dimmer` (or `just deb`): a .deb that installs
+# beside stock COSMIC and replaces none of its files. The asset list mirrors
+# the justfile's `install` recipe; keep the two in step. Source paths are
+# relative to this crate; the packaging files live in the repository root's
+# packaging/ folder.
+[package.metadata.deb]
+maintainer = "Mark A Danson <mark.a.danson@protonmail.com>"
+copyright = "2026 Mark A Danson"
+license-file = ["../../LICENSE", "0"]
+section = "x11"
+priority = "optional"
+extended-description = """\
+A COSMIC panel applet that dims each display on its own: in hardware over \
+DDC/CI where the display supports it, and in software through a translucent \
+overlay on any display. It installs beside the stock COSMIC applets and \
+replaces none of them. A udev rule gives the i2c group access to the \
+displays' DDC buses only; add yourself with `sudo usermod -aG i2c $USER`."""
+# $auto: shared libraries found by dpkg-shlibdeps. adduser: the postinst
+# creates the i2c group when no other package has.
+depends = "$auto, adduser"
+# The panel that hosts it; a suggestion, not a hard tie to COSMIC's packages.
+recommends = "cosmic-panel"
+maintainer-scripts = "../../packaging/debian/"
+assets = [
+    ["target/release/cosmic-dimmer", "usr/bin/", "755"],
+    ["data/io.github.deepthinker2001.CosmicDimmer.desktop", "usr/share/applications/", "644"],
+    ["data/icons/hicolor/scalable/apps/io.github.deepthinker2001.CosmicDimmer-symbolic.svg", "usr/share/icons/hicolor/scalable/apps/", "644"],
+    ["../../packaging/udev/60-cosmic-dimmer-i2c.rules", "usr/lib/udev/rules.d/", "644"],
+    ["../../packaging/modules-load/cosmic-dimmer.conf", "usr/lib/modules-load.d/", "644"],
+    ["../../README.md", "usr/share/doc/cosmic-dimmer/", "644"],
+    ["../../docs/install.md", "usr/share/doc/cosmic-dimmer/", "644"],
+]
+
+[lints]
+workspace = true
+
+[dependencies]
+# COSMIC's shortcut config types, at the same commit libcosmic already locks;
+# for the opt-in brightness-key shortcuts (src/keys.rs).
+cosmic-settings-config = { git = "https://github.com/pop-os/cosmic-settings-daemon" }
+dimmer-core.workspace = true
+dimmer-ddc.workspace = true
+dimmer-overlay.workspace = true
+i18n-embed.workspace = true
+i18n-embed-fl.workspace = true
+libcosmic.workspace = true
+rust-embed.workspace = true
+serde.workspace = true
+# The runtime for `--reset` (the applet itself runs on libcosmic's executor).
+tokio = { workspace = true, features = ["rt", "time"] }
+tracing.workspace = true
+tracing-subscriber.workspace = true
+# The brightness-key service on the session bus; already in the graph through
+# libcosmic, same version and runtime (tokio).
+zbus = { version = "5.15", default-features = false, features = ["tokio"] }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt", "test-util", "time"] }

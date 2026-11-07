@@ -1,0 +1,90 @@
+[workspace]
+members = [
+    "crates/dimmer-core",
+    "crates/dimmer-ddc",
+    "crates/dimmer-overlay",
+    "crates/cosmic-dimmer",
+]
+# The Samsung network tool is its own Cargo workspace, with its own lock.
+exclude = ["crates/dimmer-samsung"]
+resolver = "3"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+# The installed cosmic-applets baseline builds with Rust 1.93 (its
+# rust-toolchain.toml), and libcosmic at the pinned revision requires it.
+rust-version = "1.93"
+publish = false
+license = "GPL-3.0-only"
+
+[workspace.dependencies]
+dimmer-core = { path = "crates/dimmer-core" }
+dimmer-ddc = { path = "crates/dimmer-ddc" }
+dimmer-overlay = { path = "crates/dimmer-overlay" }
+
+i18n-embed = { version = "0.16.0", features = [
+    "fluent-system",
+    "desktop-requester",
+] }
+i18n-embed-fl = "0.10"
+rust-embed = "8.11.0"
+serde = { version = "1.0.229", features = ["derive"] }
+tokio = { version = "1.49.0", default-features = false }
+tracing = "0.1"
+tracing-subscriber = "0.3.22"
+
+# Same URL and feature set as the cosmic-applets baseline; the revision is
+# pinned by the [patch] below, which also covers crates from other COSMIC
+# repositories that depend on libcosmic's cosmic-config.
+libcosmic = { git = "https://github.com/pop-os/libcosmic", default-features = false, features = [
+    "applet",
+    "applet-token",
+    "dbus-config",
+    "multi-window",
+    "tokio",
+    "wayland",
+    "desktop-systemd-scope",
+    "winit",
+] }
+# libcosmic's settings crate, at the same pin (the [patch] below covers it).
+cosmic-config = { git = "https://github.com/pop-os/libcosmic", default-features = false }
+
+[workspace.lints.rust]
+unsafe_code = "deny"
+
+[workspace.lints.clippy]
+# cosmic-applets' `just check` runs clippy with -W clippy::pedantic.
+pedantic = { level = "warn", priority = -1 }
+
+[profile.release]
+# Same release profile as the cosmic-applets baseline.
+opt-level = 3
+panic = "abort"
+lto = "thin"
+
+# libcosmic at the exact commit locked by the installed cosmic-applets
+# epoch-1.11.0 baseline (328d142faac17c9cc3e00d434d05060411c007ea), whose own
+# manifest floats on the default branch. Patching the source (the `//` URL is
+# Cargo's way to patch a git source with itself, as cosmic-applets does for
+# cosmic-protocols) pins every reference: a `rev =` on the dependency alone
+# would leave cosmic-panel-config and cosmic-settings-config pulling a second,
+# newer cosmic-config from the default branch.
+[patch."https://github.com/pop-os/libcosmic"]
+libcosmic = { git = "https://github.com/pop-os/libcosmic//", rev = "430f3d48a97d8779f9c1985473912e594ccca1ae" }
+cosmic-config = { git = "https://github.com/pop-os/libcosmic//", rev = "430f3d48a97d8779f9c1985473912e594ccca1ae" }
+
+# Same source patches as the cosmic-applets baseline, so the protocol crates
+# resolve to the commits the installed panel and applets were built with.
+[patch."https://github.com/smithay/client-toolkit.git"]
+sctk = { package = "smithay-client-toolkit", version = "0.20.0" }
+
+[patch."https://github.com/pop-os/cosmic-protocols"]
+cosmic-protocols = { git = "https://github.com/pop-os/cosmic-protocols//", rev = "c0cff4db14c37ed954983158e4055aa94c7741d9" }
+cosmic-client-toolkit = { git = "https://github.com/pop-os/cosmic-protocols//", rev = "c0cff4db14c37ed954983158e4055aa94c7741d9" }
+
+[workspace.metadata.cosmic-baseline]
+release = "epoch-1.11.0"
+cosmic-applets = "328d142faac17c9cc3e00d434d05060411c007ea"
+libcosmic = "430f3d48a97d8779f9c1985473912e594ccca1ae"
+cosmic-protocols = "c0cff4db14c37ed954983158e4055aa94c7741d9"

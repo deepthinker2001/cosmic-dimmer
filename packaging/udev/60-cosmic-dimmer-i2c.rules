@@ -1,0 +1,40 @@
+# cosmic-dimmer: DDC/CI to monitors without root (R4, R8).
+#
+# Gives the `i2c` group read/write on display DDC buses only, and nothing else.
+# udev can't follow a connector's `ddc` link backwards, and NVIDIA's driver
+# creates no such links, so the buses are matched by an allow-list:
+#
+# 1. An I2C adapter whose parent is a DRM connector (card<N>-<connector>).
+#    These are per-connector DP AUX channels, which carry DDC/CI to
+#    DisplayPort monitors: amdgpu "AMDGPU DM aux hw bus N", and i915's
+#    "AUX x/DDI x/PHY x", which is also i915's `ddc` link target for DP.
+# 2. A PCI-parented adapter of a display-class device (0x03xxxx) whose name
+#    the driver gives its connector DDC buses:
+#    - amdgpu "AMDGPU DM i2c hw bus N": the `ddc` link targets of amdgpu
+#      connectors;
+#    - i915 "i915 gmbus <pin>": the GMBUS DDC pins;
+#    - NVIDIA "NVIDIA i2c adapter N at <bus>:<dev>.<fn>": the driver's
+#      connector I2C ports. NVIDIA exposes no `ddc` link and no
+#      port-to-connector mapping, so every one of its adapters matches; a
+#      port without a connector is the residual over-grant (see
+#      docs/install.md).
+#
+# Not matched: the motherboard SMBus (memory SPD EEPROMs), platform
+# controllers (touchpads, sensors), amdgpu's SMU/power buses, nouveau's
+# nvkm-* buses, and any other adapter, including others on a GPU.
+#
+# Note: i2c-tools ships 60-i2c-tools.rules, which already gives `i2c` every
+# bus, SMBus included. Where it is installed, this rule adds nothing and that
+# rule is the wider grant. This rule neither depends on it nor revokes it.
+#
+# To get access, a user joins the group once and logs in again:
+#   sudo usermod -aG i2c "$USER"
+# The applet itself never runs as root and is never setuid.
+
+# 1. Adapters owned by a DRM connector (DP AUX).
+SUBSYSTEM=="i2c-dev", KERNEL=="i2c-[0-9]*", SUBSYSTEMS=="drm", KERNELS=="card[0-9]*-*", GROUP="i2c", MODE="0660"
+
+# 2. Named DDC adapters on a display-class PCI device.
+SUBSYSTEM=="i2c-dev", KERNEL=="i2c-[0-9]*", ATTR{name}=="AMDGPU DM i2c hw bus [0-9]*", SUBSYSTEMS=="pci", ATTRS{class}=="0x03????", GROUP="i2c", MODE="0660"
+SUBSYSTEM=="i2c-dev", KERNEL=="i2c-[0-9]*", ATTR{name}=="i915 gmbus *", SUBSYSTEMS=="pci", ATTRS{class}=="0x03????", GROUP="i2c", MODE="0660"
+SUBSYSTEM=="i2c-dev", KERNEL=="i2c-[0-9]*", ATTR{name}=="NVIDIA i2c adapter [0-9]* at *", SUBSYSTEMS=="pci", ATTRS{class}=="0x03????", GROUP="i2c", MODE="0660"

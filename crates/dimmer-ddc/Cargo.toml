@@ -1,0 +1,22 @@
+[package]
+name = "dimmer-ddc"
+description = "DDC/CI hardware brightness backend over the kernel's i2c-dev interface"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+license.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+dimmer-core.workspace = true
+# Direct i2c-dev ioctls and advisory bus locks. rustix 1.1.5 is already in the
+# lock through the COSMIC baseline, so this adds no package.
+rustix = { version = "1.1.5", default-features = false, features = ["fs", "std"] }
+# Oneshot replies from the worker threads and the per-call deadline.
+tokio = { workspace = true, features = ["sync", "time"] }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt", "rt-multi-thread", "sync", "time"] }

@@ -1,0 +1,30 @@
+#!/bin/sh
+# cosmic-dimmer postinst: make the udev rule take effect now.
+# It creates the shared `i2c` group if it is missing (as i2c-tools does) but
+# never adds anyone to it, and never touches modprobe.d, the initramfs or any
+# COSMIC package's files.
+set -e
+
+case "$1" in
+    configure)
+        if ! getent group i2c >/dev/null; then
+            addgroup --quiet --system i2c
+        fi
+        # Boots load i2c-dev through modules-load.d; this covers the session
+        # the package is installed in. Built-in or missing is not an error.
+        modprobe i2c-dev >/dev/null 2>&1 || true
+        if command -v udevadm >/dev/null 2>&1; then
+            udevadm control --reload-rules || true
+            udevadm trigger --subsystem-match=i2c-dev --action=change || true
+        fi
+        ;;
+    abort-upgrade | abort-remove | abort-deconfigure) ;;
+    *)
+        echo "postinst called with unknown argument '$1'" >&2
+        exit 1
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0

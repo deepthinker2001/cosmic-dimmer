@@ -1,0 +1,23 @@
+#!/bin/sh
+# cosmic-dimmer postrm: drop the udev rule from udev's loaded set.
+# The `i2c` group stays: other packages (i2c-tools, ddcutil) and the user's
+# own membership use it. Device nodes keep their current owner and mode until
+# the next boot or replug; nothing else of the package remains on the system.
+set -e
+
+case "$1" in
+    remove | purge)
+        if command -v udevadm >/dev/null 2>&1; then
+            udevadm control --reload-rules || true
+        fi
+        ;;
+    upgrade | failed-upgrade | abort-install | abort-upgrade | disappear) ;;
+    *)
+        echo "postrm called with unknown argument '$1'" >&2
+        exit 1
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0

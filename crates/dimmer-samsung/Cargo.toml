@@ -1,0 +1,37 @@
+[package]
+name = "dimmer-samsung"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.88"
+description = "COSMIC Dimmer's own tool to wake and power a Samsung Tizen TV over the local network (Wake-on-LAN and the TV's WebSocket remote API)."
+license = "GPL-3.0-only"
+publish = false
+
+# Its own workspace: nothing else needs its network dependencies.
+[workspace]
+
+# Mirrors the root workspace's lints; root CI doesn't cover this crate, so
+# run fmt/clippy/test here.
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+
+[[bin]]
+name = "dimmer-samsung"
+path = "src/main.rs"
+
+[dependencies]
+base64 = "0.22"
+libc = "0.2"
+ring = "0.17"
+rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+tungstenite = { version = "0.30", default-features = false, features = ["handshake"] }
+zeroize = "1"
+
+[dev-dependencies]
+rcgen = { version = "0.14", default-features = false, features = ["ring"] }

@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  formatting:
+    runs-on: ubuntu-24.04
+    steps:
+      # Third-party actions are pinned by commit, not by movable tag.
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master, 2026-10-16
+        with:
+          toolchain: 1.93.1
+          components: rustfmt
+      - run: cargo fmt --all -- --check
+
+  lint-and-test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      # 1.93.1 is the toolchain cosmic-applets CI lints with at the installed
+      # epoch-1.11.0 baseline, and libcosmic's rust-version; pinning it keeps
+      # clippy's lint set from changing under us between runs.
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master, 2026-10-16
+        with:
+          toolchain: 1.93.1
+          components: clippy
+      # Only what the dependency graph's build scripts probe with pkg-config:
+      # xkbcommon (smithay-client-toolkit) and wayland-client (wayland-sys).
+      - name: Install system build dependencies
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libxkbcommon-dev libwayland-dev
+      - name: Clippy (warnings are errors)
+        run: cargo clippy --locked --workspace --all-targets --all-features -- -D warnings
+      - name: Test
+        run: cargo test --locked --workspace
+
+  desktop-files:
+    # As cosmic-applets validates its desktop entries: Ubuntu 25.10's
+    # desktop-file-utils 0.28 is the first to register the COSMIC category
+    # its entries (and ours) use; 0.27 in Ubuntu 24.04/Pop!_OS rejects it.
+    runs-on: ubuntu-24.04
+    container:
+      image: ubuntu:25.10@sha256:7cc5e35f6567ee8c66d2abb4aab0fd866669e6207c237c3a8f0947a5c7f17092
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - name: Install desktop-file-utils
+        run: apt-get update && apt-get install -y --no-install-recommends desktop-file-utils
+      - name: Validate desktop entries
+        run: find crates -name '*.desktop' -print -exec desktop-file-validate {} +

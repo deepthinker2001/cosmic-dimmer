@@ -1,0 +1,36 @@
+[package]
+name = "dimmer-overlay"
+description = "Software alpha dimming through applet-owned wlr-layer-shell overlay surfaces"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+license.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+dimmer-core.workspace = true
+# The SCTK the installed panel's applets were built with (already in the root
+# lock through libcosmic), not the spike's 0.19.2. Default features off: no
+# xkbcommon (no keyboard is ever bound); calloop drives the worker thread.
+# wayland-client and calloop are used through SCTK's re-exports, so their
+# versions cannot drift from the ones SCTK was built against.
+smithay-client-toolkit = { version = "0.20.0", default-features = false, features = [
+    "calloop",
+] }
+# One-shot replies from the worker thread to async callers.
+tokio = { workspace = true, features = ["sync"] }
+tracing.workspace = true
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt", "rt-multi-thread", "time"] }
+# Logs for the live-check example (examples/overlay_live.rs).
+tracing-subscriber.workspace = true
+
+# Its argument gates (never connect without --live-approved, bounded level and
+# duration) are unit tests, so the workspace test run checks them.
+[[example]]
+name = "overlay_live"
+test = true

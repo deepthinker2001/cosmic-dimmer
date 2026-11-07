@@ -1,0 +1,22 @@
+[package]
+name = "dimmer-core"
+description = "Level policy and backend contract for the dimmer; no hardware or compositor I/O"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+license.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+# Per-monitor settings files only (the store module); pinned by the root
+# [patch] of libcosmic. No subscription or D-Bus features: no iced, no zbus.
+cosmic-config = { workspace = true }
+serde = { workspace = true }
+# Only the timer, for bounding backend calls; no I/O drivers.
+tokio = { workspace = true, features = ["time"] }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt", "test-util", "time"] }
