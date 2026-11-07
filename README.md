@@ -24,8 +24,8 @@ Licensed GPL-3.0-only (see [LICENSE](LICENSE)).
 - **Auto dimming** learns the levels you choose through the day.
 - **Languages:** English, German, Spanish, French, Italian, Brazilian
   Portuguese, Dutch, Polish, Swedish, Japanese and Simplified Chinese. The
-  translations have not been checked by native speakers yet; corrections are
-  welcome.
+  translations were drafted with AI and have not been checked by native
+  speakers yet; corrections are welcome.
 - **Known limits:** the lock screen is not dimmed (nothing may draw above it),
   and screenshots and recordings come out dimmed
   ([docs/applet.md](docs/applet.md#other-limits)).
@@ -33,6 +33,16 @@ Licensed GPL-3.0-only (see [LICENSE](LICENSE)).
   power** a Samsung TV; the TV's network API has no brightness control
   ([docs/network-findings.md](docs/network-findings.md)). It is built from
   source and is not part of the package.
+
+## How it was made
+
+COSMIC Dimmer was built using AI. The code, tests, documentation and
+translations were written with AI assistance, and the code and security
+reviews before each change were AI-assisted too. The author set the
+requirements, made the design decisions, tested every behaviour on a real
+desktop and display, and decides what is released. Every change passes the
+same checks as any other contribution: formatting, clippy with pedantic lints
+as errors, and the full test suite in CI.
 
 ## Install
 

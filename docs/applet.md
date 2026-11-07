@@ -246,8 +246,8 @@ Simplified Chinese. A regional variant without its own folder, such as
 Mexican Spanish, uses the language's (`es`). The desktop entry carries the
 applet's name and description in the same languages.
 
-The translations have not yet been checked by native speakers; corrections
-are welcome. Two tests in `src/localize.rs` check that
+The translations were drafted with AI and have not yet been checked by native
+speakers; corrections are welcome. Two tests in `src/localize.rs` check that
 every translation loads and has every English message with the same
 variables, so a new message cannot be forgotten in one language. Backend
 details (DDC or Wayland errors) stay English in the log; the popup shows a
