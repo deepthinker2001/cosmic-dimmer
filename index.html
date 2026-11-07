@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>COSMIC Dimmer apt repository</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 46rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
+  pre { background: #f2f2f2; padding: 0.75rem; overflow-x: auto; }
+  @media (prefers-color-scheme: dark) { body { background: #1b1b1b; color: #e6e6e6; } pre { background: #2a2a2a; } a { color: #8ab4f8; } }
+</style>
+</head>
+<body>
+<h1>COSMIC Dimmer apt repository</h1>
+<p>Per-display brightness for the COSMIC desktop on Pop!_OS 24.04.
+Source and documentation: <a href="https://github.com/deepthinker2001/cosmic-dimmer">github.com/deepthinker2001/cosmic-dimmer</a>.</p>
+<h2>Install</h2>
+<pre>curl -fsSL https://deepthinker2001.github.io/cosmic-dimmer/key.gpg \
+  | sudo gpg --dearmor -o /usr/share/keyrings/cosmic-dimmer.gpg
+echo "deb [signed-by=/usr/share/keyrings/cosmic-dimmer.gpg] https://deepthinker2001.github.io/cosmic-dimmer stable main" \
+  | sudo tee /etc/apt/sources.list.d/cosmic-dimmer.list
+sudo apt update
+sudo apt install cosmic-dimmer</pre>
+<p>Then add <strong>Dimmer</strong> in COSMIC Settings → Desktop → Panel → Configure panel applets.
+New versions arrive with your normal system updates.</p>
+<p>Signing key fingerprint: <code>20B9 1D4A ACA9 BE9E 19F4 8B8C 4FC4 764D 9918 AC0A</code></p>
+</body>
+</html>

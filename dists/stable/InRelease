@@ -1,0 +1,30 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Architectures: amd64
+Codename: stable
+Components: main
+Date: Sat, 07 Nov 2026 18:48:05 +0000
+Description: COSMIC Dimmer for Pop!_OS COSMIC
+Label: COSMIC Dimmer
+Origin: deepthinker2001
+Suite: stable
+MD5Sum:
+ 34aa44752b044616ae895d273543bb08             1093 main/binary-amd64/Packages
+ 4fd68ee2cde195ba39a671bfd597b7c0              725 main/binary-amd64/Packages.gz
+SHA1:
+ e90f21bf0fa303c6433205950fe135cdffee4457             1093 main/binary-amd64/Packages
+ 3930704f412d14c28a8645237892d83d5238a50a              725 main/binary-amd64/Packages.gz
+SHA256:
+ e4ae82124ef745f4fa95fef039c810e1451fd51caadb1a230537df48d24b18f8             1093 main/binary-amd64/Packages
+ 2b79aa83560098dc67eaa83b15215863e43fd3f4c09283144f3c56693d6e1c2a              725 main/binary-amd64/Packages.gz
+SHA512:
+ edca30ef370bc5aa3abd8346f47679524726554bc0555d5bf93dd01f82003870773cf91713c254aada1d9e0ee6fef29e2d015a1a1e0dc780ca3b4304d269bbc6             1093 main/binary-amd64/Packages
+ 2c20639a071f5d11250cc0771adf58deb33a9ae0fc752e313b08f989bec058586e60ee356de33f9b262b8630a3ac4ca6be8209ba0355baab31575a1b12313c79              725 main/binary-amd64/Packages.gz
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQguR1KrKm+nhn0i4xPxHZNmRisCgUCau9yZQAKCRBPxHZNmRis
+CurKAQDWT5LoAD3jaXC4nELvbL0IGwz1YmVOk5jut3EBw/gUVwD+KV6cceY06oFm
+Osrr5K1pQh0WbVTRPXQmXjSfy76lJgo=
+=oWS2
+-----END PGP SIGNATURE-----
