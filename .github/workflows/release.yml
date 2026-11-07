@@ -1,0 +1,113 @@
+name: Release
+
+# Publishing a GitHub release builds the .deb, attaches it to the release and
+# adds it to the signed apt repository on the gh-pages branch.
+on:
+  release:
+    types: [published]
+  # To redo a release's packaging by hand, from the Actions tab.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to package, such as v0.1.0
+        required: true
+
+permissions:
+  contents: read
+
+# One release at a time: both jobs write to shared places.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+  TAG: ${{ github.event.release.tag_name || inputs.tag }}
+
+jobs:
+  build:
+    # Compiles every dependency, so it never sees the signing key.
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write # to attach the .deb to the release
+    steps:
+      # Third-party actions are pinned by commit, not by movable tag.
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          ref: ${{ env.TAG }} # the release's own source, also when run by hand
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master, 2026-10-16
+        with:
+          toolchain: 1.93.1
+      - name: Install build dependencies
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libxkbcommon-dev libwayland-dev
+      - name: Check the tag matches the version
+        run: |
+          version=$(cargo metadata --locked --no-deps --format-version 1 \
+            | jq -r '.packages[] | select(.name == "cosmic-dimmer") | .version')
+          if [ "$TAG" != "v$version" ]; then
+            echo "Tag $TAG does not match the package version $version." >&2
+            exit 1
+          fi
+      - name: Install cargo-deb
+        run: cargo install cargo-deb --version 3.8.0 --locked
+      - name: Build the .deb
+        run: cargo deb --locked -p cosmic-dimmer
+      - name: Attach it to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd target/debian
+          for deb in cosmic-dimmer_*.deb; do
+            sha256sum "$deb" > "$deb.sha256"
+            gh release upload "$TAG" "$deb" "$deb.sha256" --clobber -R "$GITHUB_REPOSITORY"
+          done
+
+  apt:
+    # Signs only: downloads the finished .deb and runs gpg and apt-ftparchive.
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write # to push the gh-pages branch
+    steps:
+      # The publishing script from the default branch, which may be newer
+      # than the release being packaged.
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          ref: gh-pages
+          path: site
+      - name: Install apt-ftparchive
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends apt-utils
+      - name: Download the .deb from the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir debs
+          gh release download "$TAG" -R "$GITHUB_REPOSITORY" -D debs -p 'cosmic-dimmer_*.deb' -p 'cosmic-dimmer_*.deb.sha256'
+          cd debs && sha256sum -c ./*.sha256
+      - name: Add it to the repository and sign
+        env:
+          APT_SIGNING_KEY: ${{ secrets.APT_SIGNING_KEY }}
+          KEY_ID: ${{ vars.APT_SIGNING_KEY_ID }}
+        run: |
+          GNUPGHOME=$(mktemp -d)
+          export GNUPGHOME
+          trap 'rm -rf "$GNUPGHOME"' EXIT
+          printf '%s\n' "$APT_SIGNING_KEY" | gpg --batch --quiet --import
+          scripts/publish-apt.sh site "$KEY_ID" debs/cosmic-dimmer_*.deb
+      - name: Publish the repository
+        run: |
+          cd site
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Repository unchanged."
+            exit 0
+          fi
+          git commit -m "apt repository: cosmic-dimmer ${TAG#v}"
+          git push
