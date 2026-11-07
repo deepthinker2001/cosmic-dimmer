@@ -233,7 +233,6 @@ impl Monitor {
         self.found.edid()
     }
 
-    #[must_use]
     pub fn endpoint(&self, channel: Channel) -> &Endpoint {
         match channel {
             Channel::Hardware => &self.found.hardware,
