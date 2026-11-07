@@ -36,6 +36,23 @@ Licensed GPL-3.0-only (see [LICENSE](LICENSE)).
 
 ## Install
 
+### With apt (recommended)
+
+Add the signed repository once; updates then arrive with your normal system
+updates:
+
+```sh
+curl -fsSL https://deepthinker2001.github.io/cosmic-dimmer/key.gpg \
+  | sudo gpg --dearmor -o /usr/share/keyrings/cosmic-dimmer.gpg
+echo "deb [signed-by=/usr/share/keyrings/cosmic-dimmer.gpg] https://deepthinker2001.github.io/cosmic-dimmer stable main" \
+  | sudo tee /etc/apt/sources.list.d/cosmic-dimmer.list
+sudo apt update
+sudo apt install cosmic-dimmer
+```
+
+The signing key's fingerprint is
+`20B9 1D4A ACA9 BE9E 19F4 8B8C 4FC4 764D 9918 AC0A`.
+
 ### From a release
 
 Download the `.deb` from the
