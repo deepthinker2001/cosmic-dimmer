@@ -27,7 +27,8 @@ Licensed GPL-3.0-only (see [LICENSE](LICENSE)).
   translations were drafted with AI and have not been checked by native
   speakers yet; corrections are welcome.
 - **Known limits:** the lock screen is not dimmed (nothing may draw above it),
-  and screenshots and recordings come out dimmed
+  software dimming does not dim the mouse cursor, and screenshots and
+  recordings come out dimmed
   ([docs/applet.md](docs/applet.md#other-limits)).
 - **The Samsung network tool** (`crates/dimmer-samsung`) can only **wake and
   power** a Samsung TV; the TV's network API has no brightness control

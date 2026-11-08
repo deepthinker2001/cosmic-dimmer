@@ -271,6 +271,9 @@ translated reason instead.
   shots alike.
 - **The lock screen is not dimmed.** Nothing may draw above it; the dimming
   returns after unlocking.
+- **The mouse cursor is not dimmed by software dimming.** The compositor
+  draws the cursor above every surface, the overlay included. Hardware
+  dimming dims it with the rest of the screen.
 - **Settings saved before the fingerprint are not read.** Entries named
   `monitor-<PNP>-<4-digit product>-<serial>` came from the earlier identity,
   and the monitor starts at full brightness until it is set again.
