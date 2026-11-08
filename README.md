@@ -203,7 +203,7 @@ baseline, the build requirements and what has been verified. [RELEASE.md](RELEAS
 
 What changed in each version, newest first.
 
-### 0.2.0 (unreleased)
+### 0.2.0 (2026-11-08)
 
 - Renamed from COSMIC Dimmer (`cosmic-dimmer`) to Dimmer for COSMIC
   (`cosmic-ext-dimmer`), the COSMIC community's naming for third-party
