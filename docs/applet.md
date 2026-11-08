@@ -18,15 +18,23 @@ hardware.
   one and no note about it, whatever the reason. The hardware level is held at
   100 % in the model.
 - **Move both together** (the lock, R11), shown only when both sliders are.
-- Under a slider, "Applying…" while a write is on its way, or "Not applied:
-  reason. The display is at N%." when it failed, N being the last level the
-  backend confirmed.
+- Under a slider, nothing while writes succeed, and "Not applied: reason.
+  The display is at N%." when one failed, N being the last level the backend
+  confirmed. A note on every write would resize the popup while the slider
+  moves.
 
 If the overlay backend itself cannot reach the compositor, a display that only
 the hardware backend lists gets a muted "Software dimming unavailable" note in
 place of the software slider: a slider that changed nothing would mislead.
 Which parts a row shows is decided by `parts()` in `view.rs`, which the tests
 check for a display with hardware and one without.
+
+All of the popup's padding and spacing comes from the theme
+(`cosmic::theme::spacing()` and libcosmic's applet helpers), so it follows
+COSMIC Settings → Desktop → Appearance → **Interface density** like the stock
+applets: tighter when Compact, wider when Spacious. libcosmic reloads the theme when the setting changes, so an open
+popup follows it without a restart. Only content sizes are fixed: the 16 px
+slider icons and the width of the level text, which density does not change.
 
 A **Settings** section (collapsed) holds the floors and the brightness
 shortcuts toggle. Under it, always shown, **Decrease brightness key** and

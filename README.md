@@ -166,3 +166,36 @@ model and connector and never include EDID serial numbers.
 
 [docs/workspace.md](docs/workspace.md) covers the layout, the pinned COSMIC
 baseline, the build requirements and what has been verified. [RELEASE.md](RELEASE.md) describes how to publish a new version.
+
+## Changelog
+
+What changed in each version, newest first.
+
+### 0.1.1 (2026-11-07)
+
+No change to how the applet works.
+
+- Published through a signed apt repository, so updates now arrive with your
+  normal system updates (see [Install](#with-apt-recommended)).
+- The changelog moved into this README, which the package installs.
+- Documented that software dimming leaves the mouse cursor bright, and that
+  the popup follows COSMIC's Interface density setting (Compact, Standard or
+  Spacious).
+
+### 0.1.0 (2026-11-07)
+
+First release.
+
+- A standalone COSMIC panel applet that dims each display on its own:
+  software dimming through a translucent overlay on any display, and hardware
+  dimming over DDC/CI where a display supports it (not yet tested on a real
+  DDC/CI monitor).
+- Minimum brightness floors, so the screen never goes black, and
+  `cosmic-dimmer --reset` to bring every display back to full brightness from
+  a terminal.
+- Auto dimming: learns the levels you set at different times of day and
+  follows them, 1 % at a time, relative to sunrise and sunset where you are.
+- Optional brightness shortcuts (Super + F1 / F2 by default, rebindable).
+- Levels saved per display, keyed by the display's EDID identity.
+- English, German, Spanish, French, Italian, Brazilian Portuguese, Dutch,
+  Polish, Swedish, Japanese and Simplified Chinese.

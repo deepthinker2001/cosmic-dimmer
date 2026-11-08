@@ -14,8 +14,8 @@ the new version with their next system update.
    `version` in its `Cargo.toml` too: it is a separate workspace.
 2. **Lock file.** Run `cargo check --workspace` once so `Cargo.lock` records
    the new version. CI builds with `--locked` and fails if it doesn't.
-3. **Changelog.** Add a `## 0.2.0` section at the top of `CHANGELOG.md`: what
-   changed, from a user's point of view.
+3. **Changelog.** Add a `### 0.2.0 (date)` section at the top of the
+   README's **Changelog**: what changed, from a user's point of view.
 4. **Check.** Run `./scripts/check.sh`. It runs what CI runs.
 5. **Commit and push**, then wait for the CI workflow on `main` to pass.
 
@@ -27,8 +27,9 @@ version (`0.2.1`), not a changed `0.2.0`. apt caches packages by version.
 The tag must be `v` followed by the version in `Cargo.toml`, such as `v0.2.0`;
 the workflow refuses a mismatch.
 
-From a terminal, with the notes in a file (the changelog section works well,
-followed by the install steps from the previous release's notes):
+From a terminal, with the notes in a file (the version's changelog section
+from the README works well, followed by the install steps from the previous
+release's notes):
 
 ```sh
 gh release create v0.2.0 --target main --title "COSMIC Dimmer 0.2.0" --notes-file notes.md
