@@ -1,24 +1,24 @@
 Architectures: amd64
 Codename: stable
 Components: main
-Date: Sun, 08 Nov 2026 03:27:33 +0000
-Description: COSMIC Dimmer for Pop!_OS COSMIC
-Label: COSMIC Dimmer
+Date: Sun, 08 Nov 2026 14:09:04 +0000
+Description: Dimmer for COSMIC: an unofficial per-display dimming applet
+Label: Dimmer for COSMIC
 Origin: deepthinker2001
 Suite: stable
 MD5Sum:
- 6a412fe95f1e44ee5ac5f087c082181f             1508 Release
- 1a5fa8f007544280cbd1f6c0f07fc9c9             2186 main/binary-amd64/Packages
- ddc432b36390348ca0dede832984e5e6              930 main/binary-amd64/Packages.gz
+ 96a14b1728c69c09d28ecc2effb9f96b             1508 Release
+ aa0e0d6180a5b827d57d68df8b8a2e3d             3421 main/binary-amd64/Packages
+ 897194beb702f0c32ad61b1b55df1ba5             1245 main/binary-amd64/Packages.gz
 SHA1:
- 63047e5976ae05d31b73a7091bee6230dccea7e2             1508 Release
- e0459cdd7fe1cec622eb111dce92f1603c77ee35             2186 main/binary-amd64/Packages
- 2d139b589b39659bf092451f4b76e9ac55dea9d7              930 main/binary-amd64/Packages.gz
+ 275797e944831d5e0ecb6babb3f7edb7a0036f63             1508 Release
+ 81b8c9c14f14ef70be239b03b3b4db3f197ff5c5             3421 main/binary-amd64/Packages
+ 7dc24fd1f6aeab55d137dbcac8202d3c854872cd             1245 main/binary-amd64/Packages.gz
 SHA256:
- 6113e88f6267b7902b127596b9aa0cae910f608c740a84ddbb27565a08480ddd             1508 Release
- 8a7494079824574efe86b70177d1e797b6f0b1adbc5f7820637a88287bcb706f             2186 main/binary-amd64/Packages
- 606e89618f22db1c4023f9f15a1ca644753caf0f7f560c2a69e14d143d377728              930 main/binary-amd64/Packages.gz
+ 434268e283de51025c34e66e33e7480ca4edd2d7a2d1b55c51a35f4a4102387e             1508 Release
+ d0e4d796796b8f656e2bb835e686fb4b9a2e8498c1f46b02bb7d906127817196             3421 main/binary-amd64/Packages
+ 721c9ea79b45960eae455061e28f0a2243357c7d05b8a4ac6c5546062ea9353e             1245 main/binary-amd64/Packages.gz
 SHA512:
- 3d2534ae561fb5b0bc458c80417fb7953bd5eeb3f44c48553c6644fdef7bf21309e169f4d3056d5e60484a398cd2f1a996c33781f6a8ce934c4ab37bb8ccef9d             1508 Release
- cc26056fbabbc246b11e6224c1febee23ce5baf1f180752541e47c8343bde3231923dc942543541b37aee468032881358ca0efd61ee25e2776710d347611951b             2186 main/binary-amd64/Packages
- 37c13eede2d0a6eba1626de578f1df66d6591e3404db63011d5604fbd300a583b3eb63e5dd687088b7cb2399e8f83124d3db1d81dc0cd248b2fa88633c5b068c              930 main/binary-amd64/Packages.gz
+ a209512643bb33f22ae5f8734e0e9638ae35e4e477302607633025dc565b2169ea78ec0f25d6202b200b7b7f13fc33989119591d6c4fc826af66453165a54df2             1508 Release
+ 11b41490f60323905d783142ed0a0b1d48e6aeb0af55268f2dcc52e53619211452d80cf421c1177dee654b5c50ebfe9e520f548b057d69848b7d953e8fe0a935             3421 main/binary-amd64/Packages
+ 2e0f622d21bd764462ec139a54771ff6f43f9f65f4ba08b006096e27ce8de48bc34b2620ccc8de025b69de9cff47299edeb7acb23419dbede93de2cb5d2df0b6             1245 main/binary-amd64/Packages.gz
