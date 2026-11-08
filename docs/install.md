@@ -9,12 +9,12 @@ replaces, edits and diverts no COSMIC file (R3, R5), and it never runs as root
 
 | File | `.deb` path | `sudo just install` path (prefix `/usr`) |
 | --- | --- | --- |
-| Applet binary | `/usr/bin/cosmic-dimmer` | `/usr/bin/cosmic-dimmer` |
-| Desktop entry (`X-CosmicApplet=true`, so the panel lists it) | `/usr/share/applications/io.github.deepthinker2001.CosmicDimmer.desktop` | same |
-| udev rule (I2C access, below) | `/usr/lib/udev/rules.d/60-cosmic-dimmer-i2c.rules` | `/etc/udev/rules.d/60-cosmic-dimmer-i2c.rules` |
-| Panel icon | `/usr/share/icons/hicolor/scalable/apps/io.github.deepthinker2001.CosmicDimmer-symbolic.svg` | same |
-| Load `i2c-dev` at boot | `/usr/lib/modules-load.d/cosmic-dimmer.conf` | `/etc/modules-load.d/cosmic-dimmer.conf` |
-| README, this file, license | `/usr/share/doc/cosmic-dimmer/` | same |
+| Applet binary | `/usr/bin/cosmic-ext-dimmer` | `/usr/bin/cosmic-ext-dimmer` |
+| Desktop entry (`X-CosmicApplet=true`, so the panel lists it) | `/usr/share/applications/io.github.deepthinker2001.CosmicExtDimmer.desktop` | same |
+| udev rule (I2C access, below) | `/usr/lib/udev/rules.d/60-cosmic-ext-dimmer-i2c.rules` | `/etc/udev/rules.d/60-cosmic-ext-dimmer-i2c.rules` |
+| Panel icon | `/usr/share/icons/hicolor/scalable/apps/io.github.deepthinker2001.CosmicExtDimmer-symbolic.svg` | same |
+| Load `i2c-dev` at boot | `/usr/lib/modules-load.d/cosmic-ext-dimmer.conf` | `/etc/modules-load.d/cosmic-ext-dimmer.conf` |
+| README, this file, license | `/usr/share/doc/cosmic-ext-dimmer/` | same |
 
 There are no locale files: the Fluent strings are compiled into the binary, as
 in the stock applets.
@@ -35,7 +35,7 @@ initramfs, restart the panel or add the applet to it. Those are your steps.
 ## I2C access without root (R4, R8)
 
 DDC/CI goes over `/dev/i2c-*`. The rule
-(`packaging/udev/60-cosmic-dimmer-i2c.rules`) gives the `i2c` group
+(`packaging/udev/60-cosmic-ext-dimmer-i2c.rules`) gives the `i2c` group
 read/write on **display DDC buses only**, chosen by an allow-list:
 
 1. **Adapters whose parent is a DRM connector** (`card<N>-<connector>`).
@@ -61,7 +61,7 @@ without a connector gets the grant.
 
 **On this host** (2026-11-05: NVIDIA card0 with the open module 595.104.02, and
 the AMD iGPU card1), this is the rule evaluated against the real adapters by
-`python3 -I packaging/udev/match-report.py packaging/udev/60-cosmic-dimmer-i2c.rules`:
+`python3 -I packaging/udev/match-report.py packaging/udev/60-cosmic-ext-dimmer-i2c.rules`:
 
 | Node | Adapter | Parent | DRM `ddc` link from | Our rule |
 | --- | --- | --- | --- | --- |
@@ -148,7 +148,7 @@ slider back up, open a terminal (`Super` + `T` on Pop!_OS, or a text console
 with `Ctrl` + `Alt` + `F3`) and run:
 
 ```sh
-cosmic-dimmer --reset
+cosmic-ext-dimmer --reset
 ```
 
 It sets every display's hardware and software levels to 100 %. With an
@@ -163,7 +163,7 @@ If that doesn't bring the picture back, end the applet. Its overlay surfaces
 disappear with its process:
 
 ```sh
-pkill -f 'cosmic-dimmer$'
+pkill -f 'cosmic-ext-dimmer$'
 ```
 
 cosmic-panel does not restart an applet that was killed. It comes back at the
@@ -180,7 +180,7 @@ Remove the applet from the panel first (COSMIC Settings → Desktop → Panel �
 Configure panel applets). Then:
 
 ```sh
-sudo apt remove cosmic-dimmer    # if installed from the .deb
+sudo apt remove cosmic-ext-dimmer    # if installed from the .deb
 sudo just uninstall                     # if installed with just (same prefix)
 ```
 
@@ -191,14 +191,14 @@ Either removes every file listed above and reloads udev. Two things stay:
 - **Device permissions,** until the next boot or replug.
 
 Your settings stay in
-`~/.config/cosmic/io.github.deepthinker2001.CosmicDimmer/`. Delete that
+`~/.config/cosmic/io.github.deepthinker2001.CosmicExtDimmer/`. Delete that
 folder to forget them.
 
 ## Verification record (2026-11-05)
 
 On the development host, with nothing installed on it:
 
-- `just deb` (cargo-deb 3.8.0) built `cosmic-dimmer_0.1.0-1_amd64.deb`.
+- `just deb` (cargo-deb 3.8.0) built `cosmic-ext-dimmer_0.1.0-1_amd64.deb`.
   `dpkg-deb -c` lists only the files in the table above. Its control data
   shows `Depends: adduser, libc6 (>= 2.39), libxkbcommon0 (>= 0.5.0)` plus
   the postinst and postrm. The binary unpacked from it answers `--help` and

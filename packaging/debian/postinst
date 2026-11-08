@@ -1,5 +1,5 @@
 #!/bin/sh
-# cosmic-dimmer postinst: make the udev rule take effect now.
+# cosmic-ext-dimmer postinst: make the udev rule take effect now.
 # It creates the shared `i2c` group if it is missing (as i2c-tools does) but
 # never adds anyone to it, and never touches modprobe.d, the initramfs or any
 # COSMIC package's files.

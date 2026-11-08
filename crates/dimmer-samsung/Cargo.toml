@@ -3,7 +3,7 @@ name = "dimmer-samsung"
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.88"
-description = "COSMIC Dimmer's own tool to wake and power a Samsung Tizen TV over the local network (Wake-on-LAN and the TV's WebSocket remote API)."
+description = "Dimmer for COSMIC's own tool to wake and power a Samsung Tizen TV over the local network (Wake-on-LAN and the TV's WebSocket remote API)."
 license = "GPL-3.0-only"
 publish = false
 

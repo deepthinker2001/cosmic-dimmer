@@ -1,4 +1,4 @@
-//! COSMIC Dimmer's network route to a Samsung Tizen TV (the Frame).
+//! Dimmer for COSMIC's network route to a Samsung Tizen TV (the Frame).
 //!
 //! Wakes the TV with Wake-on-LAN and powers it through the TV's local
 //! WebSocket remote API (`wss://<tv>:8002`, token pairing). Findings and the

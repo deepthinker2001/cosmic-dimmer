@@ -1,8 +1,8 @@
-# The panel applet (`crates/cosmic-dimmer`)
+# The panel applet (`crates/cosmic-ext-dimmer`)
 
 A libcosmic panel applet (R3) in the style of the stock cosmic-applets: a panel
 icon whose popup lists each display with its controls. Strings are Fluent
-(`i18n/en/cosmic-dimmer.ftl`, via `fl!`), as R13 asks.
+(`i18n/en/cosmic-ext-dimmer.ftl`, via `fl!`), as R13 asks.
 
 ## What the popup shows
 
@@ -78,7 +78,7 @@ them, one percent at a time:
   `America/Denver`); the field's placeholder names the zone. That city can be
   far enough away to move sunrise and sunset by half an hour or so; typed
   coordinates fix that. Nothing is looked up online.
-- **Reset turns it off.** `cosmic-dimmer --reset` and the applet's own reset
+- **Reset turns it off.** `cosmic-ext-dimmer --reset` and the applet's own reset
   turn auto dimming off, so a screen reset for being too dark is not dimmed
   again. The remembered points are kept for when it is turned back on.
 
@@ -102,7 +102,7 @@ them, one percent at a time:
   the floors assume both levels are real. The same applies to a display
   without an alpha output.
 - **Saved levels.** Each display's levels are saved per EDID identity through
-  dimmer-core's store (`~/.config/cosmic/io.github.deepthinker2001.CosmicDimmer/v1/monitor-…`)
+  dimmer-core's store (`~/.config/cosmic/io.github.deepthinker2001.CosmicExtDimmer/v1/monitor-…`)
   when a slider is released, on lock, reset and brightness keys. They are
   restored when the applet starts. Only levels below 100 % are written then, so
   a display at full keeps whatever its own controls set. A display without a
@@ -134,7 +134,7 @@ pair:
   has no DDC/CI) has no hardware slider, and its hardware level is held at
   100 %.
 
-Set `COSMIC_DIMMER_MOCK=1` to run on in-memory mocks instead: `MOCK-1`
+Set `COSMIC_EXT_DIMMER_MOCK=1` to run on in-memory mocks instead: `MOCK-1`
 with hardware and alpha, and `MOCK-2` with alpha only, as a display that does
 not answer DDC. Nothing real is changed then, and nothing is saved, since the
 mock IDs are not EDID identities.
@@ -149,7 +149,7 @@ the alpha backend's `Output::name`, else the hardware backend's. A display that
 only the hardware backend lists still appears, with "Software dimming
 unavailable".
 
-## Terminal recovery: `cosmic-dimmer --reset`
+## Terminal recovery: `cosmic-ext-dimmer --reset`
 
 For a screen too dark to use the applet. It never starts the applet UI and
 needs no root:
@@ -171,10 +171,10 @@ needs no root:
 
 It prints one line per step and exits 0 when everything was reset, 1
 otherwise. That includes "the applet did not answer". In that case the line
-gives the last resort: `pkill -f 'cosmic-dimmer$'`. Ending the process
+gives the last resort: `pkill -f 'cosmic-ext-dimmer$'`. Ending the process
 makes the compositor remove its overlays. (The pattern matches any command
-line that ends in `cosmic-dimmer`, such as an editor open on a file of that
-name; `pgrep -af 'cosmic-dimmer$'` lists what it would end.) cosmic-panel
+line that ends in `cosmic-ext-dimmer`, such as an editor open on a file of that
+name; `pgrep -af 'cosmic-ext-dimmer$'` lists what it would end.) cosmic-panel
 does not restart an applet killed by a signal, so
 it comes back at the next login or when it is re-added. `--help` and
 `--version` print and exit. Any other argument starts the applet as before,
@@ -190,8 +190,8 @@ cannot add a new kind of action or receive key events, so:
 
 - The running applet serves **`Raise` and `Lower`** (and `Reset`, for
   `--reset`) on the session bus. The
-  bus name is `io.github.deepthinker2001.CosmicDimmer`, the object path
-  `/io/github/deepthinker2001/CosmicDimmer`, and the interface has the
+  bus name is `io.github.deepthinker2001.CosmicExtDimmer`, the object path
+  `/io/github/deepthinker2001/CosmicExtDimmer`, and the interface has the
   same name as the bus. `Raise` lifts the lowest level of every display
   (dimmer-core's `raise`, which works whatever the sliders or the lock say).
   `Lower` drops the highest available level, stopping at the floors. The step
@@ -248,7 +248,7 @@ off. If the applet dies during a capture, turn the
 The applet follows the desktop language (`LANG` and the related variables,
 which COSMIC's Region & Language settings set), like the stock applets, and
 falls back to English. Translations are Fluent files in
-`crates/cosmic-dimmer/i18n/<language>/`: English, plus German, Spanish,
+`crates/cosmic-ext-dimmer/i18n/<language>/`: English, plus German, Spanish,
 French, Italian, Brazilian Portuguese, Dutch, Polish, Swedish, Japanese and
 Simplified Chinese. A regional variant without its own folder, such as
 Mexican Spanish, uses the language's (`es`). The desktop entry carries the

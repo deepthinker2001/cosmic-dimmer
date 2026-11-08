@@ -44,7 +44,7 @@ jobs:
       - name: Check the tag matches the version
         run: |
           version=$(cargo metadata --locked --no-deps --format-version 1 \
-            | jq -r '.packages[] | select(.name == "cosmic-dimmer") | .version')
+            | jq -r '.packages[] | select(.name == "cosmic-ext-dimmer") | .version')
           if [ "$TAG" != "v$version" ]; then
             echo "Tag $TAG does not match the package version $version." >&2
             exit 1
@@ -52,13 +52,13 @@ jobs:
       - name: Install cargo-deb
         run: cargo install cargo-deb --version 3.8.0 --locked
       - name: Build the .deb
-        run: cargo deb --locked -p cosmic-dimmer
+        run: cargo deb --locked -p cosmic-ext-dimmer
       - name: Attach it to the release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           cd target/debian
-          for deb in cosmic-dimmer_*.deb; do
+          for deb in cosmic-ext-dimmer_*.deb; do
             sha256sum "$deb" > "$deb.sha256"
             gh release upload "$TAG" "$deb" "$deb.sha256" --clobber -R "$GITHUB_REPOSITORY"
           done
@@ -87,7 +87,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir debs
-          gh release download "$TAG" -R "$GITHUB_REPOSITORY" -D debs -p 'cosmic-dimmer_*.deb' -p 'cosmic-dimmer_*.deb.sha256'
+          gh release download "$TAG" -R "$GITHUB_REPOSITORY" -D debs -p 'cosmic-ext-dimmer_*.deb' -p 'cosmic-ext-dimmer_*.deb.sha256'
           cd debs && sha256sum -c ./*.sha256
       - name: Add it to the repository and sign
         env:
@@ -98,7 +98,7 @@ jobs:
           export GNUPGHOME
           trap 'rm -rf "$GNUPGHOME"' EXIT
           printf '%s\n' "$APT_SIGNING_KEY" | gpg --batch --quiet --import
-          scripts/publish-apt.sh site "$KEY_ID" debs/cosmic-dimmer_*.deb
+          scripts/publish-apt.sh site "$KEY_ID" debs/cosmic-ext-dimmer_*.deb
       - name: Publish the repository
         run: |
           cd site
@@ -109,5 +109,5 @@ jobs:
             echo "Repository unchanged."
             exit 0
           fi
-          git commit -m "apt repository: cosmic-dimmer ${TAG#v}"
+          git commit -m "apt repository: cosmic-ext-dimmer ${TAG#v}"
           git push

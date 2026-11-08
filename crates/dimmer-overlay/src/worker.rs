@@ -59,7 +59,7 @@ use crate::{
 };
 
 /// The layer-shell namespace, visible to compositor rules and debugging tools.
-pub const NAMESPACE: &str = "cosmic-dimmer-overlay";
+pub const NAMESPACE: &str = "cosmic-ext-dimmer-overlay";
 
 pub(crate) type Reply = oneshot::Sender<Result<(), BackendError>>;
 

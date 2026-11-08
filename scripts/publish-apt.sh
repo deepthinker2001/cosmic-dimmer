@@ -18,7 +18,7 @@ site=$1
 key=$2
 shift 2
 
-pool=pool/main/c/cosmic-dimmer
+pool=pool/main/c/cosmic-ext-dimmer
 dist=dists/stable
 mkdir -p "$site/$pool" "$site/$dist/main/binary-amd64"
 for deb in "$@"; do
@@ -33,12 +33,12 @@ gzip -9 -n -k -f "$dist/main/binary-amd64/Packages"
 # the half-written Release file in itself.
 apt-ftparchive \
     -o APT::FTPArchive::Release::Origin=deepthinker2001 \
-    -o APT::FTPArchive::Release::Label="COSMIC Dimmer" \
+    -o APT::FTPArchive::Release::Label="Dimmer for COSMIC" \
     -o APT::FTPArchive::Release::Suite=stable \
     -o APT::FTPArchive::Release::Codename=stable \
     -o APT::FTPArchive::Release::Architectures=amd64 \
     -o APT::FTPArchive::Release::Components=main \
-    -o APT::FTPArchive::Release::Description="COSMIC Dimmer for Pop!_OS COSMIC" \
+    -o APT::FTPArchive::Release::Description="Dimmer for COSMIC: an unofficial per-display dimming applet" \
     release "$dist" > Release.new
 mv Release.new "$dist/Release"
 

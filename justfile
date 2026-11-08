@@ -12,8 +12,8 @@
 # removes a stock COSMIC file, and nothing touches modprobe.d or the
 # initramfs: the optional NVIDIA step in docs/install.md is the user's to make.
 
-name := 'cosmic-dimmer'
-appid := 'io.github.deepthinker2001.CosmicDimmer'
+name := 'cosmic-ext-dimmer'
+appid := 'io.github.deepthinker2001.CosmicExtDimmer'
 crate := 'crates' / name
 
 rootdir := ''
@@ -75,8 +75,8 @@ install:
     fi
     install -Dm0755 '{{bin-src}}' '{{bin-dst}}'
     install -Dm0644 '{{desktop-src}}' '{{desktop-dst}}'
-    install -Dm0644 packaging/udev/60-cosmic-dimmer-i2c.rules '{{udev-dst}}'
-    install -Dm0644 packaging/modules-load/cosmic-dimmer.conf '{{modules-dst}}'
+    install -Dm0644 packaging/udev/60-cosmic-ext-dimmer-i2c.rules '{{udev-dst}}'
+    install -Dm0644 packaging/modules-load/cosmic-ext-dimmer.conf '{{modules-dst}}'
     install -Dm0644 README.md '{{doc-dst}}/README.md'
     install -Dm0644 docs/install.md '{{doc-dst}}/install.md'
     install -Dm0644 LICENSE '{{doc-dst}}/LICENSE'

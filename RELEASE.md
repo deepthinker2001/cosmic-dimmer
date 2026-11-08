@@ -32,7 +32,7 @@ from the README works well, followed by the install steps from the previous
 release's notes):
 
 ```sh
-gh release create v0.2.0 --target main --title "COSMIC Dimmer 0.2.0" --notes-file notes.md
+gh release create v0.2.0 --target main --title "Dimmer for COSMIC 0.2.0" --notes-file notes.md
 ```
 
 Or on GitHub: **Releases → Draft a new release**, create the tag `v0.2.0` on
@@ -44,10 +44,10 @@ Don't attach a `.deb` yourself: the workflow builds and attaches it.
 
 1. **Actions → Release:** both jobs, `build` and `apt`, should pass. The run
    takes about 5 minutes.
-2. **The release page** should list `cosmic-dimmer_0.2.0-1_amd64.deb` and its
+2. **The release page** should list `cosmic-ext-dimmer_0.2.0-1_amd64.deb` and its
    `.sha256`.
 3. **apt:** on a machine with the repository added, `sudo apt update` then
-   `apt policy cosmic-dimmer` should show the new version as the candidate.
+   `apt policy cosmic-ext-dimmer` should show the new version as the candidate.
 
 ## If the workflow fails
 
@@ -66,7 +66,7 @@ Don't attach a `.deb` yourself: the workflow builds and attaches it.
   ```sh
   just deb
   GNUPGHOME=<keyring folder> scripts/publish-apt.sh <gh-pages checkout> \
-      20B91D4AACA9BE9E19F48B8C4FC4764D9918AC0A target/debian/cosmic-dimmer_0.2.0-1_amd64.deb
+      20B91D4AACA9BE9E19F48B8C4FC4764D9918AC0A target/debian/cosmic-ext-dimmer_0.2.0-1_amd64.deb
   ```
 
   Then commit and push the `gh-pages` checkout, and attach the same `.deb`
@@ -76,9 +76,9 @@ Don't attach a `.deb` yourself: the workflow builds and attaches it.
 
 The apt repository is signed with the key
 `20B9 1D4A ACA9 BE9E 19F4 8B8C 4FC4 764D 9918 AC0A`
-("deepthinker2001 (COSMIC Dimmer apt repository)"). The workflow reads it
-from the repository secret `APT_SIGNING_KEY`, and its fingerprint from the
-repository variable `APT_SIGNING_KEY_ID`. Its public half is served as
+("deepthinker2001 (COSMIC Dimmer apt repository)", after the project's
+earlier name). The workflow reads it from the repository secret
+`APT_SIGNING_KEY`, and its fingerprint from the repository variable `APT_SIGNING_KEY_ID`. Its public half is served as
 `key.gpg` on GitHub Pages.
 
 **It expires on 2031-11-06.** Extend it well before then, or apt will refuse

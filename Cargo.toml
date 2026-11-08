@@ -3,14 +3,14 @@ members = [
     "crates/dimmer-core",
     "crates/dimmer-ddc",
     "crates/dimmer-overlay",
-    "crates/cosmic-dimmer",
+    "crates/cosmic-ext-dimmer",
 ]
 # The Samsung network tool is its own Cargo workspace, with its own lock.
 exclude = ["crates/dimmer-samsung"]
 resolver = "3"
 
 [workspace.package]
-version = "0.1.1"
+version = "0.2.0"
 edition = "2024"
 # The installed cosmic-applets baseline builds with Rust 1.93 (its
 # rust-toolchain.toml), and libcosmic at the pinned revision requires it.

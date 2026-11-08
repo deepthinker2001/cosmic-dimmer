@@ -9,7 +9,7 @@ of its parents. Values are shell globs (fnmatch), as in udev. Only the keys
 this project's rule uses are supported; any other key is an error rather than
 a silent pass.
 
-    python3 -I packaging/udev/match-report.py packaging/udev/60-cosmic-dimmer-i2c.rules
+    python3 -I packaging/udev/match-report.py packaging/udev/60-cosmic-ext-dimmer-i2c.rules
 """
 
 import fnmatch

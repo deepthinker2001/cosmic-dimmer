@@ -1,6 +1,6 @@
 #!/bin/sh
 # The checks CI runs, in the same order, for running them locally first.
-# Building cosmic-dimmer needs libxkbcommon-dev and libwayland-dev
+# Building cosmic-ext-dimmer needs libxkbcommon-dev and libwayland-dev
 # (see docs/workspace.md); everything else is pure Rust.
 set -eu
 

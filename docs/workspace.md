@@ -19,7 +19,7 @@ requirements that comments and docs cite as R1 to R15 are listed in
 | `crates/dimmer-core` | Level model, per-monitor policy (`levels.rs`), EDID identity (`edid.rs`), cosmic-config settings store (`store.rs`) and the async `Backend` trait; no hardware or compositor I/O. Mock backend in `mock.rs`. | Implemented, tested; floor defaults provisional |
 | `crates/dimmer-ddc` | DDC/CI hardware backend over i2c-dev (R1, R8); see its README. | Implemented, tested offline; no DDC/CI monitor available to verify live (the Frame TV has no DDC) |
 | `crates/dimmer-overlay` | Software alpha backend through applet-owned layer-shell overlays (R2). | Implemented, offline-tested; own thread and Wayland connection, EDID identity, lifecycle and live checks in [overlay-backend.md](overlay-backend.md) |
-| `crates/cosmic-dimmer` | The libcosmic applet binary, desktop entry, Fluent strings. | In use in the stock panel on a Samsung Frame TV ([applet.md](applet.md)) |
+| `crates/cosmic-ext-dimmer` | The libcosmic applet binary, desktop entry, Fluent strings. | In use in the stock panel on a Samsung Frame TV ([applet.md](applet.md)) |
 | `scripts/check.sh` | The CI checks, runnable locally. | |
 | `.github/workflows/ci.yml` | CI: formatting, clippy, tests, desktop entry validation. | |
 
@@ -107,7 +107,7 @@ silently. `libcosmic` uses the same feature set as cosmic-applets.
 ./scripts/check.sh   # fmt --check, clippy -D warnings, test, desktop entry validation
 ```
 
-Building `cosmic-dimmer` needs these system packages (Ubuntu/Pop!_OS
+Building `cosmic-ext-dimmer` needs these system packages (Ubuntu/Pop!_OS
 names). Found by building the whole dependency graph with `--keep-going`:
 they are the only pkg-config probes that fail without them.
 
@@ -148,7 +148,7 @@ Following cosmic-applets at the installed baseline:
   that truly needs it must opt out in its own manifest, visibly.
 - **i18n:** Fluent via `i18n-embed`/`i18n-embed-fl` and an `fl!` macro, English
   fallback embedded, like the stock applets. The catalog file is named after the
-  Cargo package: `i18n/en/cosmic-dimmer.ftl` (`fl!` checks it at build time).
+  Cargo package: `i18n/en/cosmic-ext-dimmer.ftl` (`fl!` checks it at build time).
 - **Desktop entry:** modelled on the stock applets' (`X-CosmicApplet=true`,
   `NoDisplay=true`, `X-HostWaylandDisplay=true`, `Categories=COSMIC;`).
   cosmic-applets validates entries in an Ubuntu 25.10 container because only
@@ -174,7 +174,7 @@ floor defaults, which are provisional.
 
 ## Fixed decisions
 
-- **Application ID** `io.github.deepthinker2001.CosmicDimmer`. It names the
+- **Application ID** `io.github.deepthinker2001.CosmicExtDimmer`. It names the
   desktop entry, the applet's config namespace and its D-Bus name, so changing
   it would move users' settings and break their brightness-key shortcuts. It
   is one constant (`APP_ID`) plus the desktop file's name; a test checks they
