@@ -6,7 +6,8 @@
 //! [`Profile::NEARBY`] of it. Between two remembered points the level changes
 //! along a half-cosine ease (slow leaving a point, fastest midway, slow
 //! arriving at the next), all the way round the cycle, so the profile has no
-//! jumps and no corners at the points. With one point the level is constant; with none there is no target.
+//! jumps and no corners at the points. With one point the level is constant;
+//! with none there is no target.
 //!
 //! Levels here are the ones the user set; [`crate::MonitorLevels`] still
 //! applies the floors when a target is used.
@@ -231,7 +232,7 @@ mod tests {
     }
 
     #[test]
-    fn the_ease_is_followed_one_percent_at_a_time() {
+    fn step_toward_moves_one_percent_per_step() {
         let mut level = 100;
         for _ in 0..90 {
             let next = step_toward(level, 10);
