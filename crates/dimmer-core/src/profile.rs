@@ -4,8 +4,10 @@
 //! Every time the user sets a level while auto dimming is on, the profile
 //! remembers it at the current [`Phase`], replacing anything set within
 //! [`Profile::NEARBY`] of it. Between two remembered points the level changes
-//! in a straight line, all the way round the cycle, so the profile has no
-//! jumps. With one point the level is constant; with none there is no target.
+//! along a half-cosine ease (slow leaving a point, fastest midway, slow
+//! arriving at the next), all the way round the cycle, so the profile has no
+//! jumps and no corners at the points. With one point the level is constant;
+//! with none there is no target.
 //!
 //! Levels here are the ones the user set; [`crate::MonitorLevels`] still
 //! applies the floors when a target is used.
@@ -116,12 +118,15 @@ impl Profile {
             });
         }
         let along = before.phase.until(phase);
+        // A half-cosine ease: slow near each point, fastest midway.
+        let eased = (1.0 - (std::f32::consts::PI * f32::from(along) / f32::from(span)).cos()) / 2.0;
         let between = |from: u8, to: u8| -> u8 {
-            let from = i32::from(from);
-            let to = i32::from(to);
-            let span = i32::from(span);
-            let level = from + ((to - from) * i32::from(along) + span / 2).div_euclid(span);
-            u8::try_from(level.clamp(1, 100)).unwrap_or(100)
+            let from = f32::from(from);
+            let level = (from + (f32::from(to) - from) * eased).round();
+            // Clamped to 1..=100 first, so the cast cannot truncate or wrap.
+            #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
+            let level = level.clamp(1.0, 100.0) as u8;
+            level
         };
         Some(Target {
             hardware: between(before.hardware, next.hardware),
@@ -173,30 +178,68 @@ mod tests {
     }
 
     #[test]
-    fn levels_change_in_a_straight_line_between_points() {
+    fn levels_ease_between_points() {
         let mut profile = Profile::default();
         profile.learn(at(500), 100, 100); // midday
         profile.learn(at(1500), 100, 20); // midnight
+        // Exact at the points, and the midpoint is the average.
         assert_eq!(alpha(&profile, 500), 100);
-        assert_eq!(alpha(&profile, 1000), 60);
         assert_eq!(alpha(&profile, 1500), 20);
+        assert_eq!(alpha(&profile, 1000), 60);
         // Round the end of the cycle, from midnight back to midday.
         assert_eq!(alpha(&profile, 0), 60);
-        assert_eq!(alpha(&profile, 1750), 40);
-        assert_eq!(alpha(&profile, 250), 80);
+        // Slower than a straight line near the points.
+        assert!(alpha(&profile, 600) > 92);
+        assert!(alpha(&profile, 1400) < 28);
+        // Symmetric about the midpoint, and never rising while falling.
+        for along in 0..=1000 {
+            let early = i32::from(alpha(&profile, 500 + along));
+            let late = i32::from(alpha(&profile, 1500 - along));
+            assert_eq!(early + late, 120, "asymmetric at {along}");
+            if along > 0 {
+                assert!(early <= i32::from(alpha(&profile, 499 + along)));
+            }
+        }
     }
 
     #[test]
-    fn neighbouring_targets_never_differ_by_more_than_the_slope() {
+    fn a_rising_ease_is_monotonic_and_clamped() {
+        let mut profile = Profile::default();
+        profile.learn(at(300), 1, 1);
+        profile.learn(at(900), 100, 100);
+        let mut previous = alpha(&profile, 300);
+        assert_eq!(previous, 1);
+        for phase in 301..=900 {
+            let current = alpha(&profile, phase);
+            assert!((1..=100).contains(&current) && current >= previous);
+            previous = current;
+        }
+        assert_eq!(previous, 100);
+    }
+
+    #[test]
+    fn neighbouring_targets_make_no_big_jumps() {
         let mut profile = Profile::default();
         profile.learn(at(100), 100, 100);
         profile.learn(at(1100), 100, 10);
         let mut previous = alpha(&profile, 0);
         for phase in 1..Phase::CYCLE {
             let current = alpha(&profile, phase);
+            // The ease is steepest midway: pi / 2 times the average slope.
             assert!(previous.abs_diff(current) <= 1, "jump at {phase}");
             previous = current;
         }
+    }
+
+    #[test]
+    fn step_toward_moves_one_percent_per_step() {
+        let mut level = 100;
+        for _ in 0..90 {
+            let next = step_toward(level, 10);
+            assert_eq!(level - next, 1);
+            level = next;
+        }
+        assert_eq!(level, 10);
     }
 
     #[test]

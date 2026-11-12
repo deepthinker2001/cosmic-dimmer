@@ -66,12 +66,13 @@ them, one percent at a time:
   sunset in winter too. Where the sun does not rise or set (polar day or
   night), local solar time stands in, with sunrise at 06:00 and sunset at
   18:00.
-- **Following.** Between remembered points the level changes in a straight
-  line, round the whole cycle (`dimmer_core::profile`). Every 2 seconds each
-  display moves at most 1 % toward that level, within the floors. With the
-  lock on, the software level leads and the lock carries the hardware level.
-  A slider being dragged is left alone until it is let go. These steps are
-  not saved; the remembered points are.
+- **Following.** Between remembered points the level eases from one to the
+  next along a half cosine (slow at each point, fastest midway), round the
+  whole cycle (`dimmer_core::profile`). Every 2 seconds each display moves at
+  most 1 % toward that level, within the floors. With the lock on, the
+  software level leads and the lock carries the hardware level. A slider being
+  dragged is left alone until it is let go. These steps are not saved; the
+  remembered points are.
 - **Location.** Under Settings, while auto dimming is on, a field takes
   `latitude, longitude` in degrees. Empty, it uses the reference city of the
   system time zone from the tz database's `zone1970.tab` (Denver for
