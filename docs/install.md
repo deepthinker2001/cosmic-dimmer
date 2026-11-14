@@ -14,7 +14,7 @@ replaces, edits and diverts no COSMIC file (R3, R5), and it never runs as root
 | udev rule (I2C access, below) | `/usr/lib/udev/rules.d/60-cosmic-ext-dimmer-i2c.rules` | `/etc/udev/rules.d/60-cosmic-ext-dimmer-i2c.rules` |
 | Panel icon | `/usr/share/icons/hicolor/scalable/apps/io.github.deepthinker2001.CosmicExtDimmer-symbolic.svg` | same |
 | Load `i2c-dev` at boot | `/usr/lib/modules-load.d/cosmic-ext-dimmer.conf` | `/etc/modules-load.d/cosmic-ext-dimmer.conf` |
-| README, this file, license | `/usr/share/doc/cosmic-ext-dimmer/` | same |
+| README, this file, license (the `.deb` carries the license as its `copyright` file, so it ships no separate `LICENSE`) | `/usr/share/doc/cosmic-ext-dimmer/` | same |
 
 There are no locale files: the Fluent strings are compiled into the binary, as
 in the stock applets.
@@ -28,6 +28,10 @@ The installer does, on the live system:
 1. It creates the system group `i2c` if no package has (i2c-tools and ddcutil
    normally have).
 2. It loads `i2c-dev` and reloads udev, so the rule applies without a reboot.
+
+Without `just`, the README's "From source without just" lists the same
+commands one by one. The Samsung network tool is not installed by either
+route (see the README).
 
 It does **not** add anyone to a group, write to `modprobe.d`, rebuild the
 initramfs, restart the panel or add the applet to it. Those are your steps.
@@ -94,7 +98,7 @@ two agree on all 17 nodes of this host.
 > to keep i2c-tools' rule is your decision.
 
 ```sh
-sudo usermod -aG i2c "$USER"     # once; then log out and back in
+sudo usermod -aG i2c "$USER"     # once; then log out and back in (a reboot also works)
 id -nG | tr ' ' '\n' | grep -x i2c   # check membership in the new session
 ls -l /dev/i2c-*                 # GPU buses: crw-rw---- root i2c
 ```

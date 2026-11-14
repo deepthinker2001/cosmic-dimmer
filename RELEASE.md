@@ -8,23 +8,23 @@ the new version with their next system update.
 
 ## 1. Prepare the release on `main`
 
-1. **Version.** Set the new version (for example `0.2.0`) in the root
+1. **Version.** Set the new version (for example `0.3.0`) in the root
    `Cargo.toml`, under `[workspace.package]`. Every crate in the workspace
    takes it from there. If `crates/dimmer-samsung` changed, bump its own
    `version` in its `Cargo.toml` too: it is a separate workspace.
 2. **Lock file.** Run `cargo check --workspace` once so `Cargo.lock` records
    the new version. CI builds with `--locked` and fails if it doesn't.
-3. **Changelog.** Add a `### 0.2.0 (date)` section at the top of the
+3. **Changelog.** Add a `### 0.3.0 (date)` section at the top of the
    README's **Changelog**: what changed, from a user's point of view.
 4. **Check.** Run `./scripts/check.sh`. It runs what CI runs.
 5. **Commit and push**, then wait for the CI workflow on `main` to pass.
 
 A version is never reused: once a version is published, a fix is a new
-version (`0.2.1`), not a changed `0.2.0`. apt caches packages by version.
+version (`0.3.1`), not a changed `0.3.0`. apt caches packages by version.
 
 ## 2. Publish the release
 
-The tag must be `v` followed by the version in `Cargo.toml`, such as `v0.2.0`;
+The tag must be `v` followed by the version in `Cargo.toml`, such as `v0.3.0`;
 the workflow refuses a mismatch.
 
 From a terminal, with the notes in a file (the version's changelog section
@@ -32,10 +32,10 @@ from the README works well, followed by the install steps from the previous
 release's notes):
 
 ```sh
-gh release create v0.2.0 --target main --title "Dimmer for COSMIC 0.2.0" --notes-file notes.md
+gh release create v0.3.0 --target main --title "Dimmer for COSMIC 0.3.0" --notes-file notes.md
 ```
 
-Or on GitHub: **Releases → Draft a new release**, create the tag `v0.2.0` on
+Or on GitHub: **Releases → Draft a new release**, create the tag `v0.3.0` on
 `main`, fill in the title and notes, and **Publish release**.
 
 Don't attach a `.deb` yourself: the workflow builds and attaches it.
@@ -44,7 +44,7 @@ Don't attach a `.deb` yourself: the workflow builds and attaches it.
 
 1. **Actions → Release:** both jobs, `build` and `apt`, should pass. The run
    takes about 5 minutes.
-2. **The release page** should list `cosmic-ext-dimmer_0.2.0-1_amd64.deb` and its
+2. **The release page** should list `cosmic-ext-dimmer_0.3.0-1_amd64.deb` and its
    `.sha256`.
 3. **apt:** on a machine with the repository added, `sudo apt update` then
    `apt policy cosmic-ext-dimmer` should show the new version as the candidate.
@@ -54,7 +54,7 @@ Don't attach a `.deb` yourself: the workflow builds and attaches it.
 - **Rerun it for the tag**, after fixing the cause on `main`:
 
   ```sh
-  gh workflow run release.yml -f tag=v0.2.0
+  gh workflow run release.yml -f tag=v0.3.0
   ```
 
   The build uses the source at the tag; the publishing script comes from
@@ -66,7 +66,7 @@ Don't attach a `.deb` yourself: the workflow builds and attaches it.
   ```sh
   just deb
   GNUPGHOME=<keyring folder> scripts/publish-apt.sh <gh-pages checkout> \
-      20B91D4AACA9BE9E19F48B8C4FC4764D9918AC0A target/debian/cosmic-ext-dimmer_0.2.0-1_amd64.deb
+      20B91D4AACA9BE9E19F48B8C4FC4764D9918AC0A target/debian/cosmic-ext-dimmer_0.3.0-1_amd64.deb
   ```
 
   Then commit and push the `gh-pages` checkout, and attach the same `.deb`

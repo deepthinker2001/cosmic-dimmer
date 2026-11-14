@@ -957,7 +957,7 @@ dependencies = [
 
 [[package]]
 name = "cosmic-ext-dimmer"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "cosmic-settings-config",
  "dimmer-core",
@@ -1314,7 +1314,7 @@ dependencies = [
 
 [[package]]
 name = "dimmer-core"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "cosmic-config",
  "serde",
@@ -1323,7 +1323,7 @@ dependencies = [
 
 [[package]]
 name = "dimmer-ddc"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "dimmer-core",
  "rustix 1.1.5",
@@ -1332,7 +1332,7 @@ dependencies = [
 
 [[package]]
 name = "dimmer-overlay"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "dimmer-core",
  "smithay-client-toolkit",
