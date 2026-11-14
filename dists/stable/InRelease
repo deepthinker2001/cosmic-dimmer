@@ -4,31 +4,31 @@ Hash: SHA512
 Architectures: amd64
 Codename: stable
 Components: main
-Date: Sun, 08 Nov 2026 14:09:04 +0000
+Date: Sat, 14 Nov 2026 01:31:38 +0000
 Description: Dimmer for COSMIC: an unofficial per-display dimming applet
 Label: Dimmer for COSMIC
 Origin: deepthinker2001
 Suite: stable
 MD5Sum:
- 96a14b1728c69c09d28ecc2effb9f96b             1508 Release
- aa0e0d6180a5b827d57d68df8b8a2e3d             3421 main/binary-amd64/Packages
- 897194beb702f0c32ad61b1b55df1ba5             1245 main/binary-amd64/Packages.gz
+ 47341431e1d51ea3f66076c41c9f51be             1539 Release
+ 49ecc1fdeea302d3165922b844e976fa             4656 main/binary-amd64/Packages
+ a2bafd88af923bed3ce9edfdfd09c022             1444 main/binary-amd64/Packages.gz
 SHA1:
- 275797e944831d5e0ecb6babb3f7edb7a0036f63             1508 Release
- 81b8c9c14f14ef70be239b03b3b4db3f197ff5c5             3421 main/binary-amd64/Packages
- 7dc24fd1f6aeab55d137dbcac8202d3c854872cd             1245 main/binary-amd64/Packages.gz
+ 5a0d855c8b0c9f19c325a02ecac9c1b07323b914             1539 Release
+ da073662b91c431a284ea4038310332d787e1377             4656 main/binary-amd64/Packages
+ ad30ecfeda4818e2f293cd5da76e9d1b6df4a715             1444 main/binary-amd64/Packages.gz
 SHA256:
- 434268e283de51025c34e66e33e7480ca4edd2d7a2d1b55c51a35f4a4102387e             1508 Release
- d0e4d796796b8f656e2bb835e686fb4b9a2e8498c1f46b02bb7d906127817196             3421 main/binary-amd64/Packages
- 721c9ea79b45960eae455061e28f0a2243357c7d05b8a4ac6c5546062ea9353e             1245 main/binary-amd64/Packages.gz
+ 3a64340f5186b3fb36fe769d3d99e2e2ff8bc3d71c0fcc69e941c4d6c06a0df8             1539 Release
+ 4d93d9a4ce8db4647ae239fe7a073f45f69d8b4d0156c3db77d5b080db0a4d6a             4656 main/binary-amd64/Packages
+ fa7a62fe75bf6204bb6eb3886624ebccae0a6978ad33005f1d3b2cb9095b634c             1444 main/binary-amd64/Packages.gz
 SHA512:
- a209512643bb33f22ae5f8734e0e9638ae35e4e477302607633025dc565b2169ea78ec0f25d6202b200b7b7f13fc33989119591d6c4fc826af66453165a54df2             1508 Release
- 11b41490f60323905d783142ed0a0b1d48e6aeb0af55268f2dcc52e53619211452d80cf421c1177dee654b5c50ebfe9e520f548b057d69848b7d953e8fe0a935             3421 main/binary-amd64/Packages
- 2e0f622d21bd764462ec139a54771ff6f43f9f65f4ba08b006096e27ce8de48bc34b2620ccc8de025b69de9cff47299edeb7acb23419dbede93de2cb5d2df0b6             1245 main/binary-amd64/Packages.gz
+ 5ffa45217f8e4652b617a9d7d10fe0ce4e63b8731c55a1ab89a6447c324b64f2b6d869138507ac56872375d85dfcd404d691efea2c58e1e8bd1200286b389c0c             1539 Release
+ 8992a0ef477546de8f87172694e68a5cce6e077e6f9b6554c36cfbd626f806870c3e13341a51bbce5b46e77961ae1543048e18c367a9d574774fb2dfe1ac5e17             4656 main/binary-amd64/Packages
+ 240bd3afd9f510d653629be1b4f3de487b5f32448fbc709c2de3a3640292bce45f1b61cd6cfc7ca1848e60e500fb96fcd47849dec0f0e1e73d039f9a7f017efa             1444 main/binary-amd64/Packages.gz
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQQguR1KrKm+nhn0i4xPxHZNmRisCgUCavCCgAAKCRBPxHZNmRis
-CsYbAP4pjmLw9TRWPeKBYuCxvhcA5TsH3l2eNLCLiZfIAKafAwEAjcheYx3im36p
-BeaiC8xJfzeHFqiZPGPNvIFmYVQzZQs=
-=qYxX
+iHUEARYKAB0WIQQguR1KrKm+nhn0i4xPxHZNmRisCgUCave5+gAKCRBPxHZNmRis
+CmhhAQCEC09D7fv+r1BHu3Y+RDCVlT4qXKeQ36gTpiN+tPToZQEA76c9Jr3REVY5
+ffa8WOkcK9UrIJHIU0IwHppt/67k3Qc=
+=DgkP
 -----END PGP SIGNATURE-----

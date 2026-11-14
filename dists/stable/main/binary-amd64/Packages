@@ -68,3 +68,29 @@ Description: Unofficial COSMIC panel applet for per-display hardware and softwar
  gives the i2c group access to the displays' DDC buses only; add yourself with
  `sudo usermod -aG i2c $USER`.
 
+Package: cosmic-ext-dimmer
+Architecture: amd64
+Version: 0.3.0-1
+Priority: optional
+Section: x11
+Maintainer: Mark A Danson <mark.a.danson@protonmail.com>
+Installed-Size: 19978
+Provides: cosmic-dimmer
+Depends: adduser, libc6 (>= 2.39), libxkbcommon0 (>= 0.5.0)
+Recommends: cosmic-panel
+Conflicts: cosmic-dimmer
+Replaces: cosmic-dimmer
+Filename: pool/main/c/cosmic-ext-dimmer/cosmic-ext-dimmer_0.3.0-1_amd64.deb
+Size: 5296928
+MD5sum: c4824d5fe663b30849695dcb9628a416
+SHA1: b92b039c8ec1c074f0ea69f9ec8659d78dedf2a6
+SHA256: 9ae1341ad5089da0f402b80b8fe34a25b7983efc3e7f6488a121a3316af05377
+SHA512: 1f7bd1ac6fb390fe980ce4370ba70b2dad1f9e2aaf7386562ed28e619713b2c763895b182b4b510342ab300c37e272e875e99b05084af6157d03b7502a76eefd
+Description: Unofficial COSMIC panel applet for per-display hardware and software dimming
+ An unofficial COSMIC panel applet that dims each display on its own: in
+ hardware over DDC/CI where the display supports it, and in software through a
+ translucent overlay on any display. It is not made or endorsed by System76. It
+ installs beside the stock COSMIC applets and replaces none of them. A udev rule
+ gives the i2c group access to the displays' DDC buses only; add yourself with
+ `sudo usermod -aG i2c $USER`.
+
