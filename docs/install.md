@@ -29,6 +29,10 @@ The installer does, on the live system:
    normally have).
 2. It loads `i2c-dev` and reloads udev, so the rule applies without a reboot.
 
+Without `just`, the README's "From source without just" lists the same
+commands one by one. The Samsung network tool is not installed by either
+route (see the README).
+
 It does **not** add anyone to a group, write to `modprobe.d`, rebuild the
 initramfs, restart the panel or add the applet to it. Those are your steps.
 
@@ -94,7 +98,7 @@ two agree on all 17 nodes of this host.
 > to keep i2c-tools' rule is your decision.
 
 ```sh
-sudo usermod -aG i2c "$USER"     # once; then log out and back in
+sudo usermod -aG i2c "$USER"     # once; then log out and back in (a reboot also works)
 id -nG | tr ' ' '\n' | grep -x i2c   # check membership in the new session
 ls -l /dev/i2c-*                 # GPU buses: crw-rw---- root i2c
 ```

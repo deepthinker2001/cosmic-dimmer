@@ -124,9 +124,48 @@ sudo just install                # binary, desktop entry, udev rule, modules-loa
 Building needs Rust 1.93 or later and `libxkbcommon-dev` and `libwayland-dev`
 (see [docs/workspace.md](docs/workspace.md)).
 
+### From source without just
+
+`just install` only runs `install(1)` and a few system commands. Without
+`just`, build as yourself and copy the same files as root (prefix `/usr`; the
+udev and modules-load files go to `/etc`, which udev reads for a source
+install):
+
+```sh
+cargo build --locked --release -p cosmic-ext-dimmer
+id=io.github.deepthinker2001.CosmicExtDimmer
+c=crates/cosmic-ext-dimmer/data
+sudo install -Dm0755 target/release/cosmic-ext-dimmer /usr/bin/cosmic-ext-dimmer
+sudo install -Dm0644 $c/$id.desktop /usr/share/applications/$id.desktop
+sudo install -Dm0644 $c/icons/hicolor/scalable/apps/$id-symbolic.svg \
+  /usr/share/icons/hicolor/scalable/apps/$id-symbolic.svg
+sudo install -Dm0644 packaging/udev/60-cosmic-ext-dimmer-i2c.rules \
+  /etc/udev/rules.d/60-cosmic-ext-dimmer-i2c.rules
+sudo install -Dm0644 packaging/modules-load/cosmic-ext-dimmer.conf \
+  /etc/modules-load.d/cosmic-ext-dimmer.conf
+getent group i2c >/dev/null || sudo groupadd --system i2c
+sudo modprobe i2c-dev
+sudo udevadm control --reload-rules
+sudo udevadm trigger --subsystem-match=i2c-dev --action=change
+```
+
+To remove it again, delete those same files and run
+`sudo udevadm control --reload-rules`.
+
+### The Samsung network tool (optional)
+
+`crates/dimmer-samsung` is a separate workspace that is not packaged or
+installed by any of the above. Build it with
+`cargo build --release --locked --manifest-path crates/dimmer-samsung/Cargo.toml`
+and run `crates/dimmer-samsung/target/release/dimmer-samsung`. It can wake and power a Samsung TV
+and nothing else (no brightness), and `pair` makes the TV show an Allow/Deny
+prompt. Commands and what each does to the TV:
+[docs/network-findings.md](docs/network-findings.md#the-tool-cratesdimmer-samsung).
+
 ### Then, for hardware dimming
 
-Join the `i2c` group once, then log out and back in:
+Join the `i2c` group once, then **log out and back in** (a new group applies
+only to new sessions):
 
 ```sh
 sudo usermod -aG i2c "$USER"
@@ -202,6 +241,15 @@ baseline, the build requirements and what has been verified. [RELEASE.md](RELEAS
 ## Changelog
 
 What changed in each version, newest first.
+
+### 0.3.0 (2026-11-13)
+
+- Auto dimming now eases between the points it has learned along a half
+  cosine (slow at each point, fastest midway) instead of in straight lines,
+  so the screen settles at each level you chose.
+- Documentation brought up to date: an install route without `just`, the
+  Samsung network tool's build and use, and the known limits.
+- Upgrading from 0.2.0 needs no steps; settings and saved levels are kept.
 
 ### 0.2.0 (2026-11-08)
 
