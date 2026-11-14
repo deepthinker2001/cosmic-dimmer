@@ -129,7 +129,18 @@ Building needs Rust 1.93 or later and `libxkbcommon-dev` and `libwayland-dev`
 `just install` only runs `install(1)` and a few system commands. Without
 `just`, build as yourself and copy the same files as root (prefix `/usr`; the
 udev and modules-load files go to `/etc`, which udev reads for a source
-install):
+install).
+
+Don't use this if the `.deb` is installed: it would overwrite the package's
+files, and the udev rule it leaves in `/etc` would outlive `apt remove`.
+Check first: this must print nothing (if it names a package, remove that
+with apt instead):
+
+```sh
+dpkg-query -S /usr/bin/cosmic-ext-dimmer 2>/dev/null
+```
+
+Then:
 
 ```sh
 cargo build --locked --release -p cosmic-ext-dimmer
@@ -149,17 +160,24 @@ sudo udevadm control --reload-rules
 sudo udevadm trigger --subsystem-match=i2c-dev --action=change
 ```
 
-To remove it again, delete those same files and run
+To remove it again, delete those same files, including
+`/etc/udev/rules.d/60-cosmic-ext-dimmer-i2c.rules` (the i2c access grant) and
+`/etc/modules-load.d/cosmic-ext-dimmer.conf`, then run
 `sudo udevadm control --reload-rules`.
 
 ### The Samsung network tool (optional)
 
 `crates/dimmer-samsung` is a separate workspace that is not packaged or
-installed by any of the above. Build it with
-`cargo build --release --locked --manifest-path crates/dimmer-samsung/Cargo.toml`
-and run `crates/dimmer-samsung/target/release/dimmer-samsung`. It can wake and power a Samsung TV
-and nothing else (no brightness), and `pair` makes the TV show an Allow/Deny
-prompt. Commands and what each does to the TV:
+installed by any of the above. Build it with:
+
+```sh
+cargo build --release --locked \
+  --manifest-path crates/dimmer-samsung/Cargo.toml
+```
+
+and run `crates/dimmer-samsung/target/release/dimmer-samsung`. It can wake
+and power a Samsung TV and nothing else (no brightness), and `pair` makes the
+TV show an Allow/Deny prompt. Commands and what each does to the TV:
 [docs/network-findings.md](docs/network-findings.md#the-tool-cratesdimmer-samsung).
 
 ### Then, for hardware dimming

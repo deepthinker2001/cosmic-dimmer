@@ -14,7 +14,7 @@ replaces, edits and diverts no COSMIC file (R3, R5), and it never runs as root
 | udev rule (I2C access, below) | `/usr/lib/udev/rules.d/60-cosmic-ext-dimmer-i2c.rules` | `/etc/udev/rules.d/60-cosmic-ext-dimmer-i2c.rules` |
 | Panel icon | `/usr/share/icons/hicolor/scalable/apps/io.github.deepthinker2001.CosmicExtDimmer-symbolic.svg` | same |
 | Load `i2c-dev` at boot | `/usr/lib/modules-load.d/cosmic-ext-dimmer.conf` | `/etc/modules-load.d/cosmic-ext-dimmer.conf` |
-| README, this file, license | `/usr/share/doc/cosmic-ext-dimmer/` | same |
+| README, this file, license (the `.deb` carries the license as its `copyright` file, so it ships no separate `LICENSE`) | `/usr/share/doc/cosmic-ext-dimmer/` | same |
 
 There are no locale files: the Fluent strings are compiled into the binary, as
 in the stock applets.
