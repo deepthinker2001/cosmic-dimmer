@@ -13,14 +13,14 @@
 <body>
 <h1>COSMIC Dimmer apt repository</h1>
 <p>Per-display brightness for the COSMIC desktop on Pop!_OS 24.04.
-Source and documentation: <a href="https://github.com/deepthinker2001/cosmic-dimmer">github.com/deepthinker2001/cosmic-dimmer</a>.</p>
+Source and documentation: <a href="https://github.com/deepthinker2001/cosmic-ext-dimmer">github.com/deepthinker2001/cosmic-ext-dimmer</a>.</p>
 <h2>Install</h2>
-<pre>curl -fsSL https://deepthinker2001.github.io/cosmic-dimmer/key.gpg \
-  | sudo gpg --dearmor -o /usr/share/keyrings/cosmic-dimmer.gpg
-echo "deb [signed-by=/usr/share/keyrings/cosmic-dimmer.gpg] https://deepthinker2001.github.io/cosmic-dimmer stable main" \
-  | sudo tee /etc/apt/sources.list.d/cosmic-dimmer.list
+<pre>curl -fsSL https://deepthinker2001.github.io/cosmic-ext-dimmer/key.gpg \
+  | sudo gpg --dearmor -o /usr/share/keyrings/cosmic-ext-dimmer.gpg
+echo "deb [signed-by=/usr/share/keyrings/cosmic-ext-dimmer.gpg] https://deepthinker2001.github.io/cosmic-ext-dimmer stable main" \
+  | sudo tee /etc/apt/sources.list.d/cosmic-ext-dimmer.list
 sudo apt update
-sudo apt install cosmic-dimmer</pre>
+sudo apt install cosmic-ext-dimmer</pre>
 <p>Then add <strong>Dimmer</strong> in COSMIC Settings → Desktop → Panel → Configure panel applets.
 New versions arrive with your normal system updates.</p>
 <p>Signing key fingerprint: <code>20B9 1D4A ACA9 BE9E 19F4 8B8C 4FC4 764D 9918 AC0A</code></p>
