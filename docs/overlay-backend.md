@@ -185,4 +185,24 @@ On 2026-11-07, same setup:
 - **Sleep/wake (suspend from the power menu, woken with a key):** the screen
   came back dimmed; the applet kept running, with no restart.
 
-Every lifecycle check has now run on the Frame TV.
+Every lifecycle check above has run on the Frame TV, except that surface
+recreation across sleep/wake is unconfirmed (see the 2026-11-13 table below:
+the log showed no output removal or addition).
+
+### Live-check example, 2026-11-13 (FV-W7W7AJ)
+
+`overlay_live` from a release build, each run approved separately, one output
+(`SAMSUNG (HDMI-A-1)`, EDID matched, 3840x2160). There was no second monitor.
+
+| Check | Result |
+| --- | --- |
+| 70 % for 60 s | One surface, applied in under 0.1 s. Dimmed, panel readable, input normal, full brightness after the watchdog exit (user). |
+| 10 % floor for 30 s | One surface. Panel still readable, screen restored on exit (user). |
+| Screenshot at 50 % (`cosmic-screenshot`, one capture) | In one capture, mean RGB fell from 25.7/25.5/25.0 to 12.4/12.3/12.1, about 48 % of the undimmed value. That shows the capture is darker. It does **not** show that only the dimmed pixels were captured (no overlay artefact, no undimmed region): that needs a per-region check and is not yet proven. Captures were deleted. |
+| 100 % (alpha 0), 20 s | `surfaces 0`. CPU time 0.00 s user and 0.00 s system, 3 MB resident: the cost is nil because no surface exists. |
+| Lock screen, 50 % | The lock screen showed at normal brightness (user), so the overlay sits **below** the session lock. No output or surface event in the log. This is the accepted behaviour already written above: a security surface must not be covered, at the price of a bright lock screen at night. |
+| Sleep/wake, 50 % | The user reported a real suspend and the dimming came back by itself. The log shows no output removal or addition, and the run took 158 s of wall time for 150 s awake, so it did not show a surface being recreated: cosmic-comp seems to have kept the output across the suspend. |
+
+Not run in this session: hotplug of a second monitor (the TV is the only
+display, and unplugging it would blank the session), and the applet-level
+checks, because the applet is not installed on the host yet.

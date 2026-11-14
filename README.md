@@ -42,7 +42,18 @@ Until version 0.2.0 it was called COSMIC Dimmer (`cosmic-dimmer`); see
 - **The Samsung network tool** (`crates/dimmer-samsung`) can only **wake and
   power** a Samsung TV; the TV's network API has no brightness control
   ([docs/network-findings.md](docs/network-findings.md)). It is built from
-  source and is not part of the package.
+  source and is not part of the package. Live on the Frame, 2026-11-13: after
+  pairing (about 4.5 s, one Allow on the remote), `off` (3 s power-key hold)
+  powered the TV off, but `wake` did **not** bring the picture back: after the
+  Wake-on-LAN packet the tool reported "on" at 35.8 s (`PowerState` is
+  unreliable for the picture), and the user still had to turn the TV on
+  by hand. Wake-on-LAN alone is not enough here, and `wake` does not yet fall
+  back to KEY_POWER on its own; that needs a follow-up. Details and the overlay timings are in
+  [docs/overlay-backend.md](docs/overlay-backend.md#live-check-example-2026-11-13-fv-w7w7aj).
+  Not yet verified: the installed applet in the panel (two sliders per
+  monitor, lock, reset, hotplug, sleep/wake), hotplug with a second monitor,
+  and a comparison with the Mac Mini's behaviour, which has no measurements
+  recorded here.
 
 ## How it was made
 
